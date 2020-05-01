@@ -7,6 +7,9 @@ import KPIChart from '../../molecules/KPIChart'
 import TableChart from '../../molecules/TableChart'
 // import GaugeChart from '../molecules/GaugeChart'
 import Tooltip from '../../molecules/Tooltip'
+import { AcceptSelectionButton, EndSelectionButton } from '../../atoms/Buttons'
+
+// import { updateLayout } from '../../../utils/qlik/updateLayout'
 
 const chartTypes = {
   barchart: BarChart,
@@ -19,10 +22,11 @@ const chartTypes = {
 
 const Chart = (props) => {
   const {
+    app, // Store
     data, // Store
     isLoading, // Store
     model, // Store
-    layout, // Store
+    // layout, // Store
     type, // Store
     theme, // Store
     objectId, // from Parent to get Qlik Object
@@ -34,6 +38,7 @@ const Chart = (props) => {
     getObjectForChartId, // Actions
     createObjectForChartId, // Actions
     removeQlikObjectForChart, // Actions
+    selectValue, // Actions
   } = props
 
   const chartType = useRef()
@@ -80,6 +85,22 @@ const Chart = (props) => {
     removeQlikObjectForChart,
   ])
 
+  const handleDimensionClick = (d) => {
+    selectValue(d.qElemNumber, model.id)
+    // model.on('changed', () => updateLayout(layout))
+  }
+  const acceptSelections = async () => {
+    const tempModel = await app.getObject(model.id)
+    // console.log(tempModel)
+    await tempModel.endSelections(true)
+    // selectValue(d.qElemNumber, model.id)
+    // model.on('changed', () => updateLayout(layout))
+  }
+  const endSelections = async () => {
+    await model.endSelections(false)
+    app.clearAll()
+  }
+
   // RENDER SECTION
   if (!isLoading && type) {
     const RenderComponent = chartTypes[type]
@@ -90,11 +111,13 @@ const Chart = (props) => {
       <div className='chartContainer'>
         <RenderComponent
           data={data}
-          onDimensionClick={(d) => console.log(d)}
+          onDimensionClick={handleDimensionClick}
           TooltipComponent={Tooltip}
           customProps={customProps}
           theme={theme}
         />
+        <AcceptSelectionButton onClick={acceptSelections} />
+        <EndSelectionButton onClick={endSelections} />
       </div>
     )
   }

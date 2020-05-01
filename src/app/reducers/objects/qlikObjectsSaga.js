@@ -29,7 +29,7 @@ export function* getObjectForChartId(action) {
   const app = yield select(getApp)
 
   // console.log(objectId)
-  let model
+  let model, data
   try {
     model = yield app.getObject(objectId)
   } catch (err) {
@@ -55,7 +55,8 @@ export function* getObjectForChartId(action) {
     )
   }
   model.setProperties(props)
-  const data = updateLayout(layout)
+  // model.on('changed', () => (data = updateLayout(layout)))
+  data = updateLayout(layout)
   try {
     yield put(getQlikObjectForChartSuccess(chartId, model, layout, data, layout.qInfo.qType))
   } catch (error) {
@@ -75,14 +76,14 @@ export function* createObjectForChart(action) {
       qType = 'qHyperCube'
       key = 'qHyperCubeDef'
       break
-    case 'list':
-      qType = 'qSelectionList'
-      key = 'qSelectionListDef'
-      break
-    case 'selections':
-      qType = 'CurrentSelections'
-      key = 'qSelectionObjectDef'
-      break
+    // case 'list':
+    //   qType = 'qSelectionList'
+    //   key = 'qSelectionListDef'
+    //   break
+    // case 'selections':
+    //   qType = 'CurrentSelections'
+    //   key = 'qSelectionObjectDef'
+    //   break
     default:
       qType = null
       key = null
@@ -95,10 +96,12 @@ export function* createObjectForChart(action) {
       [key]: def, // These square brackets are ES6 feature to set object property named as a variable
     }
   }
-  let chartModel
+  let chartModel, data
   yield app.createSessionObject(objDef).then((model) => (chartModel = model))
+  console.log(chartModel)
   const layout = yield getLayout(chartModel)
-  const data = updateLayout(layout)
+  data = updateLayout(layout)
+  // chartModel.on('changed', () => (data = updateLayout(layout)))
   try {
     yield put(createObjectForChartSuccess(id, chartModel, layout, data, propChartType))
   } catch (err) {
@@ -111,6 +114,6 @@ export function* qlikObjectSaga() {
   yield takeEvery(CREATE_QLIK_OBJECT_FOR_CHART, createObjectForChart)
 }
 
-export function* qlikObjectLayoutSaga() {
-  yield takeEvery()
-}
+// export function* qlikObjectLayoutSaga() {
+//   yield takeEvery()
+// }

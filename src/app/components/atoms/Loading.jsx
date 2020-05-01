@@ -1,8 +1,8 @@
 import React from 'react'
 import styled, { keyframes } from 'styled-components'
-import ReactLogo from './react_logo.svg'
-import ReduxLogo from './redux_logo.svg'
-import QlikLogo from './qlik_logo.png'
+import ReactLogo from './logos/react_logo.svg'
+import ReduxLogo from './logos/redux_logo.svg'
+import QlikLogo from './logos/qlik_logo.png'
 const rotate = keyframes`
   from {
     transform: rotate(0deg);

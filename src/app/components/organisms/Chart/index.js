@@ -5,12 +5,13 @@ import {
   createObjectForChart,
   removeQlikObjectForChart,
 } from '../../../reducers/objects/actions'
-
+import { selectValue } from '../../../reducers/selections/actions'
 const mapStateToProps = function (state, props) {
   if (!state.qlikObjects.charts[props.chartId]) {
     return { isLoading: true }
   }
   return {
+    app: state.qlik.app,
     isLoading: state.qlikObjects.charts[props.chartId].isLoading,
     model: state.qlikObjects.charts[props.chartId].model,
     layout: state.qlikObjects.charts[props.chartId].layout,
@@ -25,6 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
   createObjectForChartId: (type, def, propChartType, chartId) =>
     dispatch(createObjectForChart(type, def, propChartType, chartId)),
   removeQlikObjectForChart: (chartId) => dispatch(removeQlikObjectForChart(chartId)),
+  selectValue: (value, modelId) => dispatch(selectValue(value, modelId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Chart)

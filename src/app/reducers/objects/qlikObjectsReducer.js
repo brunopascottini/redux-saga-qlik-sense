@@ -6,6 +6,7 @@ import {
   CREATE_QLIK_OBJECT_FOR_CHART_SUCCESS,
   CREATE_QLIK_OBJECT_FOR_CHART_ERROR,
   REMOVE_QLIK_OBJECT_FOR_CHART,
+  UPDATE_QLIK_OBJECT_ON_SELECTION,
 } from './actions'
 
 // REDUCER
@@ -52,6 +53,14 @@ export default function qlikObjectsReducer(state = initialState, action) {
       charts = Object.assign({}, state)
       delete charts.charts[action.payload.chartId]
       return charts
+    case UPDATE_QLIK_OBJECT_ON_SELECTION:
+      charts = Object.assign({}, state.charts)
+      charts[action.payload.chartId].isLoading = false
+      // charts[action.payload.chartId].model = action.payload.model
+      charts[action.payload.chartId].layout = action.payload.layout
+      charts[action.payload.chartId].data = action.payload.data
+
+      return { charts }
     default:
       return state
   }

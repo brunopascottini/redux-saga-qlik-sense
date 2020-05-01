@@ -5,6 +5,7 @@ export const CREATE_QLIK_OBJECT_FOR_CHART = 'CREATE_QLIK_OBJECT_FOR_CHART'
 export const CREATE_QLIK_OBJECT_FOR_CHART_SUCCESS = 'CREATE_QLIK_OBJECT_FOR_CHART_SUCCESS'
 export const CREATE_QLIK_OBJECT_FOR_CHART_ERROR = 'CREATE_QLIK_OBJECT_FOR_CHART_ERROR'
 export const REMOVE_QLIK_OBJECT_FOR_CHART = 'REMOVE_QLIK_OBJECT_FOR_CHART'
+export const UPDATE_QLIK_OBJECT_ON_SELECTION = 'UPDATE_QLIK_OBJECT_ON_SELECTION'
 // ACTIONS
 export const removeQlikObjectForChart = (chartId) => ({
   type: REMOVE_QLIK_OBJECT_FOR_CHART,
@@ -16,17 +17,11 @@ export const getQlikObjectForChart = (id, chartId) => ({
   payload: { id, chartId },
 })
 
-export const getQlikObjectForChartSuccess = (
-  chartId,
-  newModel,
-  newLayout,
-  newData,
-  newChartType
-) => ({
+export const getQlikObjectForChartSuccess = (chartId, model, newLayout, newData, newChartType) => ({
   type: GET_QLIK_OBJECT_FOR_CHART_SUCCESS,
   payload: {
     chartId,
-    model: { ...newModel },
+    model,
     layout: { ...newLayout },
     data: [...newData],
     chartType: newChartType,
@@ -49,18 +44,12 @@ export const createObjectForChart = (type, def, propChartType, chartId) => ({
   },
 })
 
-export const createObjectForChartSuccess = (
-  chartId,
-  newModel,
-  newLayout,
-  newData,
-  newChartType
-) => ({
+export const createObjectForChartSuccess = (chartId, model, layout, newData, newChartType) => ({
   type: CREATE_QLIK_OBJECT_FOR_CHART_SUCCESS,
   payload: {
     chartId,
-    model: { ...newModel },
-    layout: { ...newLayout },
+    model,
+    layout,
     data: [...newData],
     chartType: newChartType,
   },
@@ -72,4 +61,14 @@ export const createObjectForChartError = (chartId, error) => ({
     chartId,
   },
   error,
+})
+
+export const updateQlikObjectOnSelection = (chartId, model, newLayout, newData) => ({
+  type: UPDATE_QLIK_OBJECT_ON_SELECTION,
+  payload: {
+    chartId,
+    model,
+    layout: { ...newLayout },
+    data: [...newData],
+  },
 })

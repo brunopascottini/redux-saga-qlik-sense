@@ -1,42 +1,25 @@
-import {
-  SAVE_SELECTION_START,
-  SAVE_SELECTION_END,
-  UPDATE_SELECTED_VALUES,
-  SET_COMPUTING,
-} from './actions'
+import { SELECT_VALUE, END_SELECTIONS } from './actions'
 
 // REDUCER
 const initialState = {
   isSelecting: false,
-  selectedModelId: null,
-  selectedModelType: null,
+  modelSelecting: null,
   values: [],
-  engineComputing: false,
 }
 
 export default function selectionsReducer(state = initialState, action) {
   switch (action.type) {
-    case SAVE_SELECTION_START:
-      const { id, type, values } = action.payload
-      return {
-        ...state,
-        isSelecting: true,
-        selectedModelId: id,
-        selectedModelType: type,
-        values: values || [],
-      }
-    case SAVE_SELECTION_END:
-      return {
-        ...state,
-        isSelecting: false,
-        selectedModelId: null,
-        selectedModelType: null,
-        values: [],
-      }
-    case UPDATE_SELECTED_VALUES:
-      return { ...state, values: action.payload }
-    case SET_COMPUTING:
-      return { ...state, engineComputing: action.payload }
+    case SELECT_VALUE:
+      const { value: actionValue, modelId } = action.payload
+      let stateValues
+      state.modelSelecting === modelId ? (stateValues = state.values) : (stateValues = [])
+      const index = stateValues.indexOf(actionValue)
+      index < 0 ? stateValues.push(actionValue) : stateValues.splice(index, 1)
+      return stateValues.length === 0
+        ? { ...state, isSelecting: false, modelSelecting: null, values: [] }
+        : { ...state, isSelecting: true, modelSelecting: modelId, values: stateValues }
+    case END_SELECTIONS:
+      return { ...state, isSelecting: false, modelSelecting: null }
     default:
       return state
   }
