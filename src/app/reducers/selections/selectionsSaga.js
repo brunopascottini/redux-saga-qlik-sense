@@ -19,9 +19,8 @@ export function* evalutateSelection(action) {
     model.id !== selectionsState.previousModelSelecting &&
     selectionsState.previousModelSelecting !== null
   ) {
-    // Should end selection but isn't working
-    console.log('End selections when changing chart not working, TRACK')
-    yield model.endSelections(true)
+    const previousModel = yield app.getObject(selectionsState.previousModelSelecting)
+    yield previousModel.endSelections(true)
   }
 
   //   console.log('selectionsState', selectionsState)

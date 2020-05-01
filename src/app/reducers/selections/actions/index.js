@@ -18,5 +18,4 @@ export const endSelections = (model, chartId) => ({
 
 export const clearSelections = () => ({
   type: CLEAR_SELECTIONS,
-  payload: {},
 })
