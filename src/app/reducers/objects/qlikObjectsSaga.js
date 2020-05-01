@@ -98,7 +98,6 @@ export function* createObjectForChart(action) {
   }
   let chartModel, data
   yield app.createSessionObject(objDef).then((model) => (chartModel = model))
-  console.log(chartModel)
   const layout = yield getLayout(chartModel)
   data = updateLayout(layout)
   // chartModel.on('changed', () => (data = updateLayout(layout)))

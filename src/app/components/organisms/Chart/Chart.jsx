@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-
+import styled from 'styled-components'
 import BarChart from '../../molecules/BarChart'
 import PieChart from '../../molecules/PieChart'
 import ScatterPlot from '../../molecules/ScatterPlot'
@@ -20,6 +20,15 @@ const chartTypes = {
   // gauge: GaugeChart,
 }
 
+const SelectionButtons = styled.div`
+  display: inline-flex;
+  flex-direction: row;
+  position: relative;
+  z-index: 1;
+  top: -397px;
+  right: -580px;
+`
+
 const Chart = (props) => {
   const {
     app, // Store
@@ -29,16 +38,19 @@ const Chart = (props) => {
     // layout, // Store
     type, // Store
     theme, // Store
+    selections, // Store
     objectId, // from Parent to get Qlik Object
     chartId, // from Parent
     propChartType, // create Qlik Object
     dimensions, // create Qlik Object
     measures, // create Qlik Object
     customProps, // create Qlik Object
-    getObjectForChartId, // Actions
-    createObjectForChartId, // Actions
-    removeQlikObjectForChart, // Actions
-    selectValue, // Actions
+    getObjectForChartId, // Actions - Qlik Objects
+    createObjectForChartId, // Actions - Qlik Objects
+    removeQlikObjectForChart, // Actions - Qlik Objects
+    selectValue, // Actions - Selections
+    endSelections, // Actions - Selections
+    clearSelections, // Actions - Selections
   } = props
 
   const chartType = useRef()
@@ -86,19 +98,17 @@ const Chart = (props) => {
   ])
 
   const handleDimensionClick = (d) => {
-    selectValue(d.qElemNumber, model.id)
-    // model.on('changed', () => updateLayout(layout))
+    selectValue(d.qElemNumber, model)
   }
-  const acceptSelections = async () => {
-    const tempModel = await app.getObject(model.id)
-    // console.log(tempModel)
-    await tempModel.endSelections(true)
-    // selectValue(d.qElemNumber, model.id)
-    // model.on('changed', () => updateLayout(layout))
+  const chartAcceptSelections = async () => {
+    await model.endSelections(true)
+
+    endSelections(model, chartId) // Update selections store
   }
-  const endSelections = async () => {
+  const chartEndSelections = async () => {
     await model.endSelections(false)
     app.clearAll()
+    clearSelections(model) // Update selections store
   }
 
   // RENDER SECTION
@@ -116,8 +126,12 @@ const Chart = (props) => {
           customProps={customProps}
           theme={theme}
         />
-        <AcceptSelectionButton onClick={acceptSelections} />
-        <EndSelectionButton onClick={endSelections} />
+        {selections.modelSelecting === model.id && (
+          <SelectionButtons>
+            <AcceptSelectionButton onClick={chartAcceptSelections} />
+            <EndSelectionButton onClick={chartEndSelections} />
+          </SelectionButtons>
+        )}
       </div>
     )
   }
