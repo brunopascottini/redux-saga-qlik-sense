@@ -13,11 +13,14 @@ const rotate = keyframes`
 `
 const Rotate = styled.div`
   display: inline-block;
-  animation: ${rotate} 3.5s linear infinite;
+  animation: ${rotate} 5s linear infinite;
 `
 const Centered = styled.div`
+  display: block;
+  margin: auto 50%;
+  transform: translateX(-50%);
   height: 100vh;
-  width: 100vw;
+  width: 40vw;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -33,7 +36,7 @@ const Loading = () => {
         <img src={ReduxLogo} alt='Redux Logo' />
       </Rotate>
       <Rotate>
-        <img height='60px' width='auto' src={QlikLogo} alt='Redux Logo' />
+        <img height='60px' width='auto' src={QlikLogo} alt='Qlik Logo' />
       </Rotate>
     </Centered>
   )
