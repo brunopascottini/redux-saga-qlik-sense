@@ -33,7 +33,7 @@ const Loading = () => {
         <img src={ReduxLogo} alt='Redux Logo' />
       </Rotate>
       <Rotate>
-        <img height='130px' width='auto' src={QlikLogo} alt='Redux Logo' />
+        <img height='60px' width='auto' src={QlikLogo} alt='Redux Logo' />
       </Rotate>
     </Centered>
   )

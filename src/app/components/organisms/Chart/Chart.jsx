@@ -102,12 +102,11 @@ const Chart = (props) => {
   }
   const chartAcceptSelections = async () => {
     await model.endSelections(true)
-
     endSelections(model, chartId) // Update selections store
   }
   const chartEndSelections = async () => {
     await model.endSelections(false)
-    app.clearAll()
+    await app.clearAll(true)
     clearSelections(model) // Update selections store
   }
 
@@ -117,6 +116,7 @@ const Chart = (props) => {
     if (!chartType) {
       throw new Error(`Invalid Chart type :${type}`)
     }
+
     return (
       <div className='chartContainer'>
         <RenderComponent

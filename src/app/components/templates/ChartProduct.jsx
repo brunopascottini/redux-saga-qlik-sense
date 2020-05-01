@@ -8,8 +8,7 @@ const ChartProduct = () => {
     <ChartGrid>
       <Chart objectId='MRmuW' chartId={uuidv4()} customProps={{ color: '#777', format: '.3s' }} />
       {/* Bar Chart */}
-      <Chart objectId='MEAjCJ' chartId={uuidv4()} customProps={{ format: '.4s' }} />
-      {/* Pie Chart */}
+
       <Chart
         chartId={uuidv4()}
         propChartType='kpi'
@@ -23,6 +22,8 @@ const ChartProduct = () => {
         customProps={{ format: '.5s' }}
       />
       {/* KPI Indicator */}
+      <Chart objectId='MEAjCJ' chartId={uuidv4()} customProps={{ format: '.4s' }} />
+      {/* Pie Chart */}
       <Chart
         objectId='bsxkrg'
         chartId={uuidv4()}

@@ -13,12 +13,24 @@ export function* evalutateSelection(action) {
   const getObjects = (state) => state.qlikObjects.charts
   const objectsState = yield select(getObjects)
 
+  //   console.log('modelId', model.id)
+  //   console.log('selecting model', selectionsState.modelSelecting)
+  if (
+    model.id !== selectionsState.previousModelSelecting &&
+    selectionsState.previousModelSelecting !== null
+  ) {
+    // Should end selection but isn't working
+    console.log('End selections when changing chart not working, TRACK')
+    yield model.endSelections(true)
+  }
+
+  //   console.log('selectionsState', selectionsState)
   const toggle = selectionsState.values.length > 0 ? true : false
   const chartIds = Object.keys(objectsState)
 
   yield model.beginSelections(['/qHyperCubeDef'])
   yield model.selectHyperCubeValues('/qHyperCubeDef', 0, [value], toggle)
-  //   yield model.endSelections(false)
+
   for (const chartId of chartIds) {
     let model = yield app.getObject(objectsState[chartId].model.id)
     const layout = yield model.getLayout()
