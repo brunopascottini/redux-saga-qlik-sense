@@ -23,19 +23,30 @@ export function* evalutateSelection(action) {
     yield previousModel.endSelections(true)
   }
 
-  //   console.log('selectionsState', selectionsState)
+  //   console.log('selections length', selectionsState.values.length)
   const toggle = selectionsState.values.length > 0 ? true : false
   const chartIds = Object.keys(objectsState)
 
-  yield model.beginSelections(['/qHyperCubeDef'])
-  yield model.selectHyperCubeValues('/qHyperCubeDef', 0, [value], toggle)
-
-  for (const chartId of chartIds) {
-    let model = yield app.getObject(objectsState[chartId].model.id)
-    const layout = yield model.getLayout()
-    const data = updateLayout(layout)
-    // const chartType = objectsState[chartId].chartType
-    yield put(updateQlikObjectOnSelection(chartId, model, layout, data))
+  if (selectionsState.values.length !== 0) {
+    yield model.beginSelections(['/qHyperCubeDef'])
+    yield model.selectHyperCubeValues('/qHyperCubeDef', 0, [value], toggle)
+    for (const chartId of chartIds) {
+      let model = yield app.getObject(objectsState[chartId].model.id)
+      const layout = yield model.getLayout()
+      const data = updateLayout(layout)
+      // const chartType = objectsState[chartId].chartType
+      yield put(updateQlikObjectOnSelection(chartId, model, layout, data))
+    }
+  } else {
+    yield model.endSelections(false)
+    yield app.clearAll(true)
+    for (const chartId of chartIds) {
+      let model = yield app.getObject(objectsState[chartId].model.id)
+      const layout = yield model.getLayout()
+      const data = updateLayout(layout)
+      // const chartType = objectsState[chartId].chartType
+      yield put(updateQlikObjectOnSelection(chartId, model, layout, data))
+    }
   }
 }
 
@@ -45,7 +56,7 @@ export function* endSelections(action) {
   const data = updateLayout(layout)
   yield put(updateQlikObjectOnSelection(chartId, model, layout, data))
 }
-export function* clearSelections(action) {
+export function* clearSelections() {
   const getApp = (state) => state.qlik.app
   const app = yield select(getApp)
   const getObjects = (state) => state.qlikObjects.charts
