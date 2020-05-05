@@ -22,7 +22,7 @@ export const getQlikObjectForChartSuccess = (chartId, model, newLayout, newData,
   payload: {
     chartId,
     model,
-    layout: { ...newLayout },
+    layout: newLayout,
     data: [...newData],
     chartType: newChartType,
   },
@@ -68,7 +68,7 @@ export const updateQlikObjectOnSelection = (chartId, model, newLayout, newData) 
   payload: {
     chartId,
     model,
-    layout: { ...newLayout },
+    layout: newLayout,
     data: [...newData],
   },
 })
