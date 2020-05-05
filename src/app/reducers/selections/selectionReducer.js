@@ -37,7 +37,7 @@ export default function selectionsReducer(state = initialState, action) {
         isSelecting: false,
         modelSelecting: null,
         previousModelSelecting: state.modelSelecting,
-        vales: state.values,
+        values: state.values,
       }
     case CLEAR_SELECTIONS:
       return {
