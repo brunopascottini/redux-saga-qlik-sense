@@ -27,6 +27,7 @@ describe('Componend connected to Redux store', () => {
       }
     }
     const { enzymeWrapper, props } = setup()
+    console.log(props)
     console.log(enzymeWrapper.debug()) // Improve test
     expect(enzymeWrapper).not.toBeNull()
   })
@@ -55,6 +56,7 @@ describe('Componend connected to Redux store', () => {
       }
     }
     const { enzymeWrapper, props } = setup()
+    console.log(props)
     console.log(enzymeWrapper.debug()) // Improve test
     expect(enzymeWrapper).not.toBeNull()
   })

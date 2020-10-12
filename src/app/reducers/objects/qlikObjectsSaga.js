@@ -48,6 +48,7 @@ export function* getObjectForChartId(action) {
       qHeight: layout.qHyperCube.qSize.qcy,
     },
   ]
+
   if (layout.qInfo.qType === 'scatterplot') {
     layout.qHyperCube.qDataPages = yield model.getHyperCubeData(
       '/qHyperCubeDef',
@@ -56,6 +57,7 @@ export function* getObjectForChartId(action) {
   }
   model.setProperties(props)
   // model.on('changed', () => (data = updateLayout(layout)))
+
   data = updateLayout(layout)
   try {
     yield put(getQlikObjectForChartSuccess(chartId, model, layout, data, layout.qInfo.qType))
@@ -76,14 +78,14 @@ export function* createObjectForChart(action) {
       qType = 'qHyperCube'
       key = 'qHyperCubeDef'
       break
-    // case 'list':
-    //   qType = 'qSelectionList'
-    //   key = 'qSelectionListDef'
-    //   break
-    // case 'selections':
-    //   qType = 'CurrentSelections'
-    //   key = 'qSelectionObjectDef'
-    //   break
+    case 'list':
+      qType = 'qSelectionList'
+      key = 'qSelectionListDef'
+      break
+    case 'selections':
+      qType = 'CurrentSelections'
+      key = 'qSelectionObjectDef'
+      break
     default:
       qType = null
       key = null
@@ -99,6 +101,7 @@ export function* createObjectForChart(action) {
   let chartModel, data
   yield app.createSessionObject(objDef).then((model) => (chartModel = model))
   const layout = yield getLayout(chartModel)
+
   data = updateLayout(layout)
   // chartModel.on('changed', () => (data = updateLayout(layout)))
   try {
