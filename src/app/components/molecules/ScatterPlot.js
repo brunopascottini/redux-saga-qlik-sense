@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import * as d3 from 'd3'
 
 const ScatterPlot = ({ data, TooltipComponent, onDimensionClick, customProps, theme }) => {
-  // console.log('Scatter Plot', data)
   data = data.filter((d) => d.measures[1].value !== 0)
   const formating = customProps.format || ''
   // Custom props section
